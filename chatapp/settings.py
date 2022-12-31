@@ -27,7 +27,8 @@ SECRET_KEY = 'django-insecure-k_60$yu&fzmk%8%i^k-$mkj%pi(4=nwz(afqx@0r72kfl6r81)
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+# ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['*']
 
 
 # Application definition
@@ -167,6 +168,8 @@ LOGIN_URL = reverse_lazy('login')
 
 STATIC_URL = '/static/'
 STATICFILES_DIRS = [os.path.join(BASE_DIR, "static")]
+#questa aggiunta io
+STATIC_ROOT =os.path.join(BASE_DIR, 'staticfiles')
 
 
 ASGI_APPLICATION = 'chatapp.asgi.application'

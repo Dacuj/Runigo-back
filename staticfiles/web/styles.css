@@ -1,0 +1,36 @@
+body{
+    background-color: #f4f4f4;
+}
+#searching{
+
+    text-align: center;
+    padding: 50px;
+    padding-top:10px;
+    padding-bottom: 5px;
+}
+#searching input{
+    width:400px;
+    height: 40px;
+    border-radius: 6px;
+    border: none;
+    padding-left: 15px;
+}
+#heading1{
+
+
+    font-family: 'Nunito';
+    font-style: normal;
+    font-weight: 900;
+    font-size: 64px;
+    line-height: 87px;
+    text-align: center;
+
+    color: #ACA4A4;
+}
+#paragraph{
+    text-align: center;
+}
+.topnav-right{
+    float:right;
+    background-color: aqua;
+}
