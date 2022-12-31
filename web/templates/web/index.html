@@ -1,0 +1,17 @@
+{% extends 'web/layout.html'%}
+{%block body%}
+<div>
+    <h1 id="heading1">Find a Mentor</h1>
+</div>
+
+<div id="searching">
+    <form action="#">
+        <input placeholder="Look for universities" name="Uni">
+        <input type="submit" value="Search">
+    </form>
+</div>
+<p id="paragraph">Click <a href="{% url 'supportedunis' %}">here</a> to see the full list</p>
+<!-- <img src="web/AdobeStock_296517286.jpeg" alt="My image"> -->
+
+
+{%endblock%}

@@ -1,0 +1,8 @@
+{% extends 'web/layout.html' %}
+{% block body %}
+{% for university in universities %}
+<div>
+    <a href="{% url 'university' university.name %}">{{ university.name }}</a>
+</div>
+{%endfor%}
+{% endblock %}

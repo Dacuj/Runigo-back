@@ -1,0 +1,30 @@
+{%extends 'web/layout.html' %}
+{%block body%}
+
+{% if message %}
+<div>{{ message }}</div>
+{% endif %}
+
+<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed neque tellus, tristique nec augue pharetra, egestas laoreet tortor. Ut pretium dolor turpis, quis eleifend dolor hendrerit nec. Nulla volutpat sagittis lectus quis vestibulum. Ut scelerisque suscipit ligula. Aenean nec libero vel lectus vulputate blandit. Vivamus quis tellus sodales lectus porttitor vulputate. Quisque et leo molestie, vestibulum lectus ac, tincidunt magna.</p>
+
+<form action="{% url 'becomeamentor' %}" method="post">
+{% csrf_token %}
+<div class="form-group" style="padding:10px; padding-bottom: 2px;">
+    <input autofocus class="form-control" type="text" name="Firstname" placeholder="First Name">
+</div>
+<div class="form-group" style="padding-left: 10px; padding-right: 10px;">
+    <input class="form-control" type="text" name="LastName" placeholder="Last Name">
+</div>
+<div class="form-group" style="padding-left: 10px; padding-right: 10px;">
+    <input class="form-control" type="email" name="uniemail" placeholder="University email">
+</div>
+antther form for the university place
+<div style="padding:20px; padding-bottom: 0px;">
+    <input class="btn btn-primary" type="submit" value="Send Request">
+</div>
+</form>
+<div style="padding:20px; padding-top: 3px;">
+</div>
+
+
+{%endblock%}

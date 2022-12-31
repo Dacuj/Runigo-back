@@ -1,0 +1,300 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>{% block title %}Runigo{% endblock %}</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link
+      rel="stylesheet"
+      href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
+      integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh"
+      crossorigin="anonymous"
+    />
+    <link href="{% static 'web/styles.css' %}" rel="stylesheet" />
+    <link
+      href="{% static 'web/favicon.ico' %}"
+      rel="shortcut icon"
+      type="image/x-icon"
+    />
+
+    {% block script %} {% endblock %}
+
+    <!-- <script>
+      //   const roomName = JSON.parse(
+      //     document.getElementById("room-name").textContent
+      //   );
+      const roomName = 1;
+      // console.log(window.location.host);
+
+      const chatSocket = new WebSocket(
+        "ws://localhost:8000/ws/chat/" + roomName + "/"
+        // "ws://" + window.location.host + "/ws/chat/" + roomName + "/"
+      );
+
+      chatSocket.onmessage = function (e) {
+        const data = JSON.parse(e.data);
+        // document.querySelector("#chat-log").value += data.message + "\n";
+      };
+
+      // chatSocket.onopen
+
+
+      chatSocket.onclose = function (e) {
+        console.log(e);
+        console.error("Chat socket closed unexpectedly");
+        chatSocket.connect()
+      };
+
+      //   document.querySelector("#chat-message-input").focus();
+      //   document.querySelector("#chat-message-input").onkeyup = function (e) {
+      //     if (e.keyCode === 13) {
+      //       // enter, return
+      //       document.querySelector("#chat-message-submit").click();
+      //     }
+      //   };
+
+      //   document.querySelector("#chat-message-submit").onclick = function (e) {
+      //     const messageInputDom = document.querySelector("#chat-message-input");
+      //     const message = messageInputDom.value;
+      //     chatSocket.send(
+      //       JSON.stringify({
+      //         message: message,
+      //       })
+      //     );
+      //     messageInputDom.value = "";
+      //   };
+    </script> -->
+
+    <!-- <script>
+      class Websocketservice {
+        static instance = null;
+
+        callback = {};
+
+        static getInstance() {
+          if (!Websocketservice.instance) {
+            Websocketservice.instance = new Websocketservice();
+          }
+          return Websocketservice.instance;
+        }
+
+        constructor() {
+          this.socketRef = null;
+        }
+
+        connect() {
+          // console.log(chatGroup);
+          // console.log(token);
+          const path = `ws://localhost:8000/ws/chat/1/`;
+          // const path = `ws://localhost:8000/ws/chat/${chatGroup}/?token=${token}`;
+          // if (chatGroup) {
+          //   this.socketRef = new WebSocket(path);
+          // }
+
+          this.socketRef = new WebSocket(path);
+
+          this.socketRef.onopen = () => {
+            console.log("websocket open");
+          };
+
+          // this.socketNewMessage(
+          //   JSON.stringify({
+          //     command: "fetch_messages",
+          //   })
+          // );
+          this.socketRef.onmessage = (e) => {
+            this.socketNewMessage(e.data);
+            // console.log("sending a message");
+          };
+
+          this.socketRef.onerror = (e) => {
+            console.log(e.message);
+          };
+
+          this.socketRef.onclose = () => {
+            console.log("websocket close");
+            this.connect();
+          };
+        }
+        socketNewMessage(data) {
+          // if (data) alert(data[command]);
+          console.log(data);
+          const parsedData = JSON.parse(data);
+          const command = parsedData.command;
+          if (Object.keys(this.callback).length === 0) {
+            return;
+          }
+          if (command === "messages") {
+            // console.log(data);
+            // console.log(this.callback[command]);
+            this.callback[command](parsedData.messages);
+          }
+          if (command === "new_message") {
+            // console.log(data);
+            // let  d = data.command;
+            // console.log(d);
+            this.callback[command](parsedData.message);
+          }
+          if (command === "userChatGroups") {
+            this.callback[command](parsedData.chatGRoups);
+          }
+          if (command === "new_userChatGroups") {
+            this.callback[command](parsedData.chatGRoup);
+          }
+        }
+
+        fetchMessages(username, chatGroup) {
+          this.sendMessage({
+            command: "fetch_messages",
+            username: username,
+            chatGroup: chatGroup,
+          });
+        }
+
+        fetchUserChatGroups(user) {
+          // this.sendMessage({
+          //   command: "userChatGroups",
+          //   userId: user,
+          // });
+
+          this.data = {
+            command: "userChatGroups",
+            userId: user,
+          };
+
+          this.sendMessage(JSON.stringify(this.data));
+        }
+
+        setCUrrentGroup(current) {
+          this.data = {
+            command: "currentGroup",
+            groupId: current,
+          };
+
+          this.sendMessage(JSON.stringify(this.data));
+        }
+
+        newChatMessage(message) {
+          // console.log("message.content");
+
+          // const audio = new Audio();
+          // audio.autoplay = true;
+          // audio.srcObject = message.content;
+
+          // console.log("new message to send to server");
+          // this.sendMessage({
+          //   command: "new_message",
+          //   from: message.from,
+          //   message: message.content,
+          //   chatGroup: message.chatGroup,
+          // });
+
+          this.data = {
+            command: "new_message",
+            from: message.from,
+            message: message.content,
+            chatGroup: message.chatGroup,
+          };
+
+          this.sendMessage(JSON.stringify(this.data));
+        }
+
+        addCallbacks(
+          messagesCallback,
+          newMessageCallback,
+          userChatGroups,
+          newUserChat
+        ) {
+          this.callback["messages"] = messagesCallback;
+          this.callback["new_message"] = newMessageCallback;
+          this.callback["userChatGroups"] = userChatGroups;
+          this.callback["new_userChatGroups"] = newUserChat;
+        }
+
+        sendMessage(data) {
+          try {
+            // console.log(JSON.stringify(data));
+            // console.log({...data});
+            // console.log(data);
+            // console.log("send commands and data");
+            // this.socketRef.send(JSON.stringify({ ...data }));
+
+            this.socketRef.send(data);
+            // this.socketRef.send(JSON.stringify(data));
+          } catch (e) {
+            console.log(e.message);
+          }
+        }
+
+        state() {
+          // console.log(this.socketRef);
+          return this.socketRef?.readyState;
+        }
+
+        disconnect() {
+          console.log("disconnect");
+          this.socketRef.close();
+        }
+
+        // waitForSocketConnection(callback) {
+        //   const socket = this.socketRef;
+        //   const recursion = this.waitForSocketConnection;
+        //   setTimeout(() => {
+        //     if (socket.readySTate === 1) {
+        //       console.log("connection is secure");
+        //       if (callback != null) {
+        //         callback();
+        //       }
+        //       return;
+        //     } else {
+        //       console.log("waiting for connection");
+        //       recursion(callback);
+        //     }
+        //   }, 1);
+        // }
+      }
+
+      const WebSocketInstance = Websocketservice.getInstance();
+      WebSocketInstance.connect();
+
+      // export default WebSocketInstance;
+    </script> -->
+  </head>
+  <body>
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+      <a class="navbar-brand" href="{% url 'index' %}">Runigo</a>
+
+      <div>
+        <ul class="navbar-nav mr-auto">
+          {% if user.is_authenticated %}
+          <li class="nav-item">
+            <a class="nav-link" href="{% url 'mentorprofile' user.username %}"
+              ><strong>{{ user.username }}</strong></a
+            >
+          </li>
+          {% endif %} {% if user.is_authenticated %} {% if not user.is_mentor %}
+          <li class="nav-item">
+            <a class="nav-link" href="{% url 'becomeamentor'%}"
+              >Become a Mentor</a
+            >
+          </li>
+          {% endif %}
+          <li class="nav-item">
+            <a class="nav-link" href="{% url 'logout' %}">Log Out</a>
+          </li>
+          {% else %}
+          <li class="nav-item">
+            <a class="nav-link" href="{% url 'login' %}">Log In</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="{% url 'register' %}">Register</a>
+          </li>
+          {% endif %}
+        </ul>
+      </div>
+    </nav>
+
+    <div class="body">{% block body %} {% endblock %}</div>
+  </body>
+</html>

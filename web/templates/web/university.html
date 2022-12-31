@@ -1,0 +1,23 @@
+{% extends 'web/layout.html' %}
+{%block body%}
+
+<h3 style="margin: 10px">{{ uni.name }}</h3>
+{% if mentor %}
+<div style="padding:10px">
+    <h3>Hey {{mentor}}, what about creating your mentor profile?</h3>
+    <button type="button" class="btn btn-primary">Create my profile</button>
+</div>
+{% endif %}
+{% for m in mentors %}
+{% if not m == mentor %} 
+<div class="card" style="width: 18rem; margin: 10px; display: inline-block;">
+    <img src="https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460__480.png" class="card-img-top" alt="..." style="height:18rem">
+    <div class="card-body">
+      <h5 class="card-title">{{m}}</h5>
+      <p class="card-text">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam augue ex, suscipit nec diam sit amet, eleifend suscipit tellus. Nullam vitae nulla eget felis fringilla mattis ut eu nisl.</p>
+      <a href="{% url 'mentorprofile' m %}" class="btn btn-primary">View Profile</a>
+    </div>
+  </div>
+{%endif %}
+{%endfor%}
+{%endblock%}
